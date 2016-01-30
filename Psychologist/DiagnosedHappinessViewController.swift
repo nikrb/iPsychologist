@@ -16,10 +16,17 @@ class DiagnosedHappinessViewController: HappinessViewController {
             diagnosticHistory += [happiness]
         }
     }
-    var diagnosticHistory = [Int]()
+    // get a new instance every time we navigate here, so this won't do
+    // var diagnosticHistory = [Int]()
+    var diagnosticHistory: [Int] {
+        get{ return defaults.objectForKey(History.DefaultsKey) as? [Int] ?? []}
+        set{ defaults.setObject(newValue, forKey: History.DefaultsKey)}
+    }
+    private let defaults = NSUserDefaults.standardUserDefaults()
     
     private struct History {
         static let SegueIdentifier = "Show Diagnostic History"
+        static let DefaultsKey = "DiagnosedHappinessViewController.History"
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
